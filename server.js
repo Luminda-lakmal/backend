@@ -2,13 +2,13 @@ const express = require('express');
 const app = express();
 const port = 3000;
 const sequelize = require('./config/db');
-const userRoutes = require('./routes/index');
+const routes = require('./routes'); 
 
 // Middleware to parse JSON
 app.use(express.json());
 
 // Routes
-app.use('/api', userRoutes);
+app.use('/api', routes);
 
 // Sync database and start the server
 sequelize.sync()
