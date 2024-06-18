@@ -1,8 +1,10 @@
 const express = require('express');
 const Enrollment = require('../model/enrollment');
 const router = express.Router();
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 
-router.post('/enrollment', async (req, res) => {
+router.post('/enrollment',[auth, admin], async (req, res) => {
     try {
         const enrollment = await Enrollment.create(req.body);
         res.status(201).json(enrollment);
@@ -38,7 +40,7 @@ router.get('/enrollment/:sid', async (req, res) => {
     }
 });
 
-router.delete('/enrollment/:id', async (req, res) => {
+router.delete('/enrollment/:id',[auth, admin], async (req, res) => {
     try {
         const enrollment = await Enrollment.update({
             is_deleted: true,

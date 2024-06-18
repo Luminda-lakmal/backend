@@ -2,9 +2,10 @@ const express = require('express');
 const router = express.Router();
 const Course = require('../model/course');
 const { DATE } = require('sequelize');
-
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 // Endpoint to create a new user
-router.post('/course', async (req, res) => {
+router.post('/course',[auth, admin], async (req, res) => {
   try {
     const course = await Course.create(req.body);
     res.status(201).json(course);
@@ -26,7 +27,7 @@ router.get('/course', async (req, res) => {
   }
 });
 
-router.put('/course/:id', async (req, res) => {
+router.put('/course/:id',[auth, admin], async (req, res) => {
   try {
     const course = await Course.update(req.body, {
       where: { id: req.params.id }
@@ -38,18 +39,16 @@ router.put('/course/:id', async (req, res) => {
 });
 
 
-router.delete('/course/:id', async (req, res) => {
+router.delete('/course/:id',[auth, admin], async (req, res) => {
   try {
-    const course = await Course.update({
-      is_deleted: true,
-      deleted_at: DATE(new DATE())
-    },
-      {
-        where: {
-          id: req.params.id
-        }
-      });
-    res.status(201).json(course);
+    const course = await Course.findByPk(req.params.id);
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    course.is_deleted = true;
+    course.deleted_at = new Date();
+    await course.save();
+    res.json({ message: 'Course marked as deleted successfully' });
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
