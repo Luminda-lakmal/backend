@@ -1,67 +1,46 @@
 const express = require('express');
-const Student = require('../model/students');
+const Enrollment = require('../model/enrollment');
 const router = express.Router();
 
-
-router.post('/student', async (req, res) => {
+router.post('/enrollment', async (req, res) => {
     try {
-        const student = await Student.create(req.body);
-        res.status(201).json(student);
+        const enrollment = await Enrollment.create(req.body);
+        res.status(201).json(enrollment);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
 
-router.get('/student', async (req, res) => {
+router.get('/enrollment', async (req, res) => {
     try {
-        const students = await Student.findAll({
+        const enrollments = await Enrollment.findAll({
             where: {
                 is_deleted: false
             }
         });
-        res.status(201).json(students);
+        res.status(201).json(enrollments);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
-router.get('/student/:id', async (req, res) => {
+//get enrollments by student id
+router.get('/enrollment/:sid', async (req, res) => {
     try {
-        const student = await Student.findByPk(req.params.id);
-        res.status(201).json(student);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
-//get stdent by user id
-router.get('/student/user/:id', async (req, res) => {
-    try {
-        const student = await Student.findOne({
+        const enrollments = await Enrollment.findAll({
             where: {
                 is_deleted: false,
-                user_id: req.params.id
+                student_id: req.params.sid
             }
         });
-        res.status(201).json(student);
+        res.status(201).json(enrollments);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
 
-router.put('/student/:id', async (req, res) => {
+router.delete('/enrollment/:id', async (req, res) => {
     try {
-        const student = await Student.update(req.body, {
-            where: { id: req.params.id }
-        });
-        res.status(201).json(student);
-    } catch (error) {
-        res.status(400).json({ error: error.message });
-    }
-});
-
-
-router.delete('/student/:id', async (req, res) => {
-    try {
-        const student = await Student.update({
+        const enrollment = await Enrollment.update({
             is_deleted: true,
         },
             {
@@ -69,10 +48,12 @@ router.delete('/student/:id', async (req, res) => {
                     id: req.params.id
                 }
             });
-        res.status(201).json(student);
+        res.status(201).json(enrollment);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
 });
+
+
 
 module.exports = router;

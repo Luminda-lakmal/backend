@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
 const User = require('../model/users');
-const Enrollment = require('../model/enrollment')
+// const Enrollment = require('../model/enrollment')
 
 const Student = sequelize.define('Students', {
     id: {
@@ -39,6 +39,6 @@ const Student = sequelize.define('Students', {
 
 Student.belongsTo(User, { foreignKey: 'user_id', as: 'user' });
 User.hasOne(Student, { foreignKey: 'user_id', as: 'student' });
-Student.hasMany(Enrollment, { foreignKey: 'student_id', as: 'enrollments' });
+// Student.hasMany(Enrollment, { foreignKey: 'student_id', as: 'enrollments' });
 
 module.exports = Student;

@@ -1,6 +1,6 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const Enrollment = require('../model/enrollment')
+// const Enrollment = require('../model/enrollment')
 
 const Course = sequelize.define('Courses', {
     id: {
@@ -27,5 +27,5 @@ const Course = sequelize.define('Courses', {
     underscored: true  // Use snake_case column names
 });
 
-Course.hasMany(Enrollment, { foreignKey: 'course_id', as: 'enrollments' });
+// Course.hasMany(require('./enrollment'), { foreignKey: 'course_id', as: 'enrollments' });
 module.exports = Course;

@@ -16,7 +16,6 @@ const Enrollment = sequelize.define('Enrollments', {
             model: Student,
             key: 'id'
         },
-        unique: true,
     },
     course_id: {
         type: DataTypes.INTEGER,
@@ -35,7 +34,13 @@ const Enrollment = sequelize.define('Enrollments', {
 }, {
     timestamps: true,  // Enable timestamps
     paranoid: true,    // Enable soft deletes (using deleted_at)
-    underscored: true  // Use snake_case column names
+    underscored: true,  // Use snake_case column names
+    indexes: [
+        {
+            unique: true,
+            fields: ['student_id', 'course_id']
+        }
+    ]
 });
 
 Enrollment.belongsTo(Student, { foreignKey: 'student_id', as: 'student' });
