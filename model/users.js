@@ -37,7 +37,11 @@ const User = sequelize.define('Users', {
         type: DataTypes.BOOLEAN,
         allowNull: false,
         defaultValue: false
-    }
+    },
+    deleted_at: {
+        type: DataTypes.DATE,
+        allowNull: true,
+    },
 }, {
     timestamps: true,  // Enable timestamps
     paranoid: true,    // Enable soft deletes (using deleted_at)
