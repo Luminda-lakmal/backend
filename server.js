@@ -9,7 +9,6 @@ app.use(express.json());
 
 // Routes
 app.use('/api', routes);
-
 // Sync database and start the server
 sequelize.sync()
   .then(() => {

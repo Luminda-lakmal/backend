@@ -1,7 +1,7 @@
 const { DataTypes } = require('sequelize');
 const sequelize = require('../config/db');
-const Student = require('./students');
 const Course = require('./course');
+const User = require('./users');
 
 const Enrollment = sequelize.define('Enrollments', {
     id: {
@@ -13,7 +13,7 @@ const Enrollment = sequelize.define('Enrollments', {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: {  // Define foreign key constraint
-            model: Student,
+            model: User,
             key: 'id'
         },
     },
@@ -43,7 +43,7 @@ const Enrollment = sequelize.define('Enrollments', {
     ]
 });
 
-Enrollment.belongsTo(Student, { foreignKey: 'student_id', as: 'student' });
+Enrollment.belongsTo(User, { foreignKey: 'student_id', as: 'user' });
 Enrollment.belongsTo(Course, { foreignKey: 'course_id', as: 'course' });
 
 module.exports = Enrollment;
