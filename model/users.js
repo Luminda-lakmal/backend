@@ -13,6 +13,7 @@ const User = sequelize.define('Users', {
     },
     email: {
         type: DataTypes.STRING,
+        unique: true,
         allowNull: false
     },
     password: {
@@ -20,8 +21,17 @@ const User = sequelize.define('Users', {
         allowNull: false
     },
     role: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.ENUM('student','admin'),
+        defaultValue: 'student',
         allowNull: false
+    },
+    address: {
+        type: DataTypes.STRING,
+        allowNull: true
+    },
+    phone: {
+        type: DataTypes.STRING,
+        allowNull: true
     },
     is_deleted: {
         type: DataTypes.BOOLEAN,
