@@ -56,6 +56,4 @@ router.delete('/enrollment/:id',[auth, admin], async (req, res) => {
     }
 });
 
-
-
 module.exports = router;

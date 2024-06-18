@@ -3,6 +3,8 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../model/users');
 const router = express.Router();
+const auth = require('../middleware/auth');
+const admin = require('../middleware/admin');
 require('dotenv').config();
 
 // Register a new user
@@ -33,6 +35,52 @@ router.post('/login', async (req, res) => {
   }
 });
 
+router.put('/user/:id', [auth, admin], async (req, res) => {
+  const userId = req.params.id;
+  const { name, email, password, role, address, phone } = req.body;
+  try {
+    let user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
 
+    // Update user fields
+    user.name = name;
+    user.email = email;
+    user.role = role;
+    user.address = address;
+    user.phone = phone;
 
+    // If password is provided, hash and update password
+    if (password) {
+      const hashedPassword = await bcrypt.hash(password, 10);
+      user.password = hashedPassword;
+    }
+
+    // Save updated user
+    await user.save();
+
+    res.json({ message: 'User updated successfully', user });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.delete('/user/:id', [auth, admin], async (req, res) => {
+  const userId = req.params.id;
+  try {
+    const user = await User.findByPk(userId);
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+
+    user.is_deleted = true;
+    user.deleted_at = new Date();
+    await user.save();
+
+    res.json({ message: 'User deleted successfully' });
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
 module.exports = router;

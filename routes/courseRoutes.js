@@ -29,10 +29,14 @@ router.get('/course', async (req, res) => {
 
 router.put('/course/:id',[auth, admin], async (req, res) => {
   try {
-    const course = await Course.update(req.body, {
+    const course = await Course.findByPk(req.params.id);
+    if (!course) {
+      return res.status(404).json({ message: 'Course not found' });
+    }
+    const updatedCourse = await Course.update(req.body, {
       where: { id: req.params.id }
     });
-    res.status(201).json(course);
+    res.status(201).json(updatedCourse);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
