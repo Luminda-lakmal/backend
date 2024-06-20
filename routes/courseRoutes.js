@@ -5,7 +5,7 @@ const { DATE } = require('sequelize');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 // Endpoint to create a new user
-router.post('/course', async (req, res) => {
+router.post('/course',[auth, admin], async (req, res) => {
   try {
     const course = await Course.create(req.body);
     res.status(201).json(course);
@@ -22,6 +22,20 @@ router.get('/course', async (req, res) => {
       }
     });
     res.status(201).json(courses);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+});
+
+router.get('/course/:id', async (req, res) => {
+  try {
+    const course = await Course.findOne({
+      where: {
+        id: req.params.id,
+        is_deleted: false
+      }
+    });
+    res.status(201).json(course);
   } catch (error) {
     res.status(400).json({ error: error.message });
   }
