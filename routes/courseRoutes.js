@@ -5,7 +5,7 @@ const { DATE } = require('sequelize');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 // Endpoint to create a new user
-router.post('/course',[auth, admin], async (req, res) => {
+router.post('/course', async (req, res) => {
   try {
     const course = await Course.create(req.body);
     res.status(201).json(course);
