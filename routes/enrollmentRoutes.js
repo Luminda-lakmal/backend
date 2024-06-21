@@ -4,7 +4,7 @@ const router = express.Router();
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 
-router.post('/enrollment',[auth, admin], async (req, res) => {
+router.post('/enrollment', async (req, res) => {
     try {
         const enrollment = await Enrollment.create(req.body);
         res.status(201).json(enrollment);
