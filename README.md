@@ -1,4 +1,5 @@
 After cloning inside the project folder you have to run on cmd
-             npm install
+             <b>npm install<b>
 to run the application
-            nodemon server.js
+            <b>nodemon server.js<b>
+
