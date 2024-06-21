@@ -1,9 +1,10 @@
 const express = require('express');
-const Enrollment = require('../model/enrollment');
 const router = express.Router();
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
-
+const Course = require('../model/course')
+const User = require('../model/users');
+const Enrollment = require('../model/enrollment')
 router.post('/enrollment', async (req, res) => {
     try {
         const enrollment = await Enrollment.create(req.body);
@@ -18,9 +19,23 @@ router.get('/enrollment', async (req, res) => {
         const enrollments = await Enrollment.findAll({
             where: {
                 is_deleted: false
-            }
+            },
+            include: [
+                {
+                    model: User,
+                    as: 'user',
+                    attributes: ['name'],
+                    where: { is_deleted: false },
+                },
+                {
+                    model: Course,
+                    as: 'course',
+                    attributes: ['title'],
+                    where: { is_deleted: false },
+                },
+            ],
         });
-        res.status(201).json(enrollments);
+        res.status(200).json(enrollments);
     } catch (error) {
         res.status(400).json({ error: error.message });
     }
@@ -32,7 +47,21 @@ router.get('/enrollment/:sid', async (req, res) => {
             where: {
                 is_deleted: false,
                 student_id: req.params.sid
-            }
+            },
+            include: [
+                {
+                    model: User,
+                    as: 'user',
+                    attributes: ['name'],
+                    where: { is_deleted: false },
+                },
+                {
+                    model: Course,
+                    as: 'course',
+                    attributes: ['title'],
+                    where: { is_deleted: false },
+                },
+            ],
         });
         res.status(201).json(enrollments);
     } catch (error) {
