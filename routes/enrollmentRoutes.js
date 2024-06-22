@@ -44,10 +44,10 @@ router.get('/enrollment', async (req, res) => {
 //get enrollments by student id
 router.get('/enrollment/:sid', async (req, res) => {
     try {
-        const student = await User.findByPk(req.params.id);
-        if (!student) {
-            return res.status(404).json({ message: 'Student not found' });
-        }
+        // const student = await User.findByPk(req.params.id);
+        // if (!student) {
+        //     return res.status(404).json({ message: 'Student not found' });
+        // }
         const enrollments = await Enrollment.findAll({
             where: {
                 is_deleted: false,
