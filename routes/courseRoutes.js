@@ -1,11 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const Course = require('../model/course');
-const User = require('../model/users');
-const { DATE } = require('sequelize');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
-// Endpoint to create a new user
+
 router.post('/course',[auth, admin], async (req, res) => {
   try {
     const course = await Course.create(req.body);
