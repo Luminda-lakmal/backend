@@ -71,10 +71,7 @@ router.get('/enrollment/:sid', async (req, res) => {
 
 router.delete('/enrollment/:id', async (req, res) => {
     try {
-        const enrollment = await Enrollment.update({
-            is_deleted: true,
-            deleted_at: new Date()
-        },
+        const enrollment = await Enrollment.destroy(
             {
                 where: {
                     id: req.params.id

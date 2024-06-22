@@ -37,7 +37,6 @@ const Enrollment = sequelize.define('Enrollments', {
     },
 }, {
     timestamps: true,  // Enable timestamps
-    paranoid: true,    // Enable soft deletes (using deleted_at)
     underscored: true,  // Use snake_case column names
     indexes: [
         {
