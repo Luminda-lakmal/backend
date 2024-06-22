@@ -4,7 +4,8 @@ const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
 const Course = require('../model/course')
 const User = require('../model/users');
-const Enrollment = require('../model/enrollment')
+const Enrollment = require('../model/enrollment');
+
 router.post('/enrollment', async (req, res) => {
     try {
         const enrollment = await Enrollment.create(req.body);
@@ -43,6 +44,10 @@ router.get('/enrollment', async (req, res) => {
 //get enrollments by student id
 router.get('/enrollment/:sid', async (req, res) => {
     try {
+        const student = await User.findByPk(req.params.id);
+        if (!student) {
+            return res.status(404).json({ message: 'Student not found' });
+        }
         const enrollments = await Enrollment.findAll({
             where: {
                 is_deleted: false,
@@ -71,6 +76,10 @@ router.get('/enrollment/:sid', async (req, res) => {
 
 router.delete('/enrollment/:id', async (req, res) => {
     try {
+        const enr = await Enrollment.findByPk(req.params.id);
+        if (!enr) {
+            return res.status(404).json({ message: 'Enrollment not found' });
+        }
         const enrollment = await Enrollment.destroy(
             {
                 where: {
